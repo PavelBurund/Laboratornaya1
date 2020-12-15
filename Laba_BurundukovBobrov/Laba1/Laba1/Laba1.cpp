@@ -79,7 +79,7 @@ size_t Matrix<Type>::getDeterminant() {
 	for (int i = 0; i < dimension; i++)
 		auxiliary[i] = new int[dimension];
 
-	if (dimension < 1) cout << "Определитель вычислить невозможно!";
+	if (dimension < 1) throw exception("Определитель вычислить невозможно!");
 	if (dimension == 1) {
 		determinant = matrix[0][0];
 		return(determinant);
@@ -161,7 +161,7 @@ size_t Matrix<Type>::getDeterminant(int** mas,
 	for (int i = 0; i < dim; i++)
 		auxiliary[i] = new int[dim];
 
-	if (dim < 1) cout << "Определитель вычислить невозможно!";
+	if (dim < 1) throw exception("Определитель вычислить невозможно!");
 	if (dim == 1) {
 		determinant = mas[0][0];
 		return(determinant);
@@ -194,12 +194,17 @@ pair<size_t, size_t> Matrix<Type>::getSize()
 
 template<class Type>
 void Matrix<Type>::changeValue(size_t rows, size_t cols, Type data)
-{ 
+{
+	if (this->cols <= cols || this->rows <= rows) throw exception("Неправильно указана ячейка")
 	matrix[rows][cols] = data; 
 }
 
 template<class Type>
-Type Matrix<Type>::getValue(size_t rows, size_t cols) { return matrix[rows - 1][cols - 1]; }
+Type Matrix<Type>::getValue(size_t rows, size_t cols) 
+{ 
+	if (this->cols <= cols || this->rows <= rows) throw exception("Неправильно указана ячейка")
+	return matrix[rows - 1][cols - 1];
+}
 
 template<class Type>
 Matrix<Type> Matrix<Type>::operator +(const Matrix& other)
